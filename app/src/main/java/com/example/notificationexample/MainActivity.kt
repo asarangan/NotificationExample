@@ -2,6 +2,9 @@ package com.example.notificationexample
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +17,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val intent:Intent = Intent(this,MainActivity::class.java)
+        val pendingIntent = TaskStackBuilder.create(this).run{
+            addNextIntentWithParentStack(intent)
+            getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
 
         val CHANNEL_ID = "CHANNEL_ID"
         val notificationManager = NotificationManagerCompat.from(this)
@@ -22,6 +31,7 @@ class MainActivity : AppCompatActivity() {
             .setContentText("Message")
             .setSmallIcon(R.drawable.ic_notification_foreground)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(pendingIntent)
             .build()
 
         val CHANNEL_NAME = "CHANNEL_NAME"
